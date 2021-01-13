@@ -1,9 +1,11 @@
 #include "Infection.h"
 
-char FileUtilities::GetActualTime(){
+char* FileUtilities::GetActualTime(){
     time_t actualTime = time(NULL);
     char* aTime = ctime(&actualTime);
-    return *aTime;
+    std::string timeReturn = aTime;
+    printf("TIME : %s", aTime);
+    return aTime;
 }
 
 void FileUtilities::write2File(const char* fileName, std::string fileContent){
@@ -22,13 +24,30 @@ void FileUtilities::log2File(const char* fileDirectory, std::string logContent){
     if(std::experimental::filesystem::exists(fileDirectory)){
         std::ofstream file;
         file.open(fileDirectory, std::ios::app);
-        char currentTime = GetActualTime();
-        file << "[" << currentTime << "] " << logContent;
+        //currentTime = GetActualTime function
+        char* currentTime = GetActualTime();
+        //Taking char* currentTime and storing it in a std::string
+        std::string logTime{currentTime};
+        //Remove \r from the end of currentTime
+        logTime.erase(logTime.size() - 1);
+        //logTime was == date, now it == [date]
+        logTime = "[" + logTime + "]";
+        // Writing logContent to the file
+        file << logTime << " " << logContent << "\n";
         file.close();
     } else {
         std::ofstream file;
         file.open(fileDirectory);
-        char currentTime = GetActualTime();
-        file << "[" << currentTime << "] " << logContent;
+        //currentTime = GetActualTime function
+        char* currentTime = GetActualTime();
+        //Taking char* currentTime and storing it in a std::string
+        std::string logTime{currentTime};
+        //Remove \r from the end of currentTime
+        logTime.erase(logTime.size() - 1);
+        //Logtime was == date, now it == [date]
+        logTime = "[" + logTime + "]";
+        //Log it to the file
+        file << logTime << " " << logContent << "\n";
         file.close();
+    }
 }

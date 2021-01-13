@@ -27,12 +27,13 @@ class FileUtilities{
 public:
 	void write2File(const char* fileName, std::string fileContent);
 	void log2File(const char* fileDirectory, std::string logContent);
-	char GetActualTime();
+	char* GetActualTime();
 };
 
 struct Adapters {
 	std::string AdapterName;
 	char Family;
+	int numberOfAdapters;
 	std::string LocalIPAddress;
 };
 
@@ -50,10 +51,14 @@ private:
 	char* KernelRelease;
 	bool tryPrivilegeEscalation;
 	char* KernelVersion;
+	bool stealthEnabled;
+	char* localLanguage;
+	char* localTimeZone;
 	bool canInstall;
 	bool InstallRequirements;
 	//Fonctions
 	FileInformations GetFileInformations(const char* fileName);
+	bool askForNoStealthMode();
 	void askForPrivilegeEscalation();
 	void GetLinuxVersion();
 	void runLocalCommand(const char* commandToRun, const char* errorMessage);
