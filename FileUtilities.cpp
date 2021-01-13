@@ -23,5 +23,12 @@ void FileUtilities::log2File(const char* fileDirectory, std::string logContent){
         std::ofstream file;
         file.open(fileDirectory, std::ios::app);
         char currentTime = GetActualTime();
-    }
+        file << "[" << currentTime << "] " << logContent;
+        file.close();
+    } else {
+        std::ofstream file;
+        file.open(fileDirectory);
+        char currentTime = GetActualTime();
+        file << "[" << currentTime << "] " << logContent;
+        file.close();
 }
