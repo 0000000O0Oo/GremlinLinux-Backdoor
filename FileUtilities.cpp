@@ -1,10 +1,9 @@
 #include "Infection.h"
 
-char FileTiming::GetActualTime(){
+char FileUtilities::GetActualTime(){
     time_t actualTime = time(NULL);
     char* aTime = ctime(&actualTime);
-    actualTime = *aTime;
-    return actualTime;
+    return *aTime;
 }
 
 void FileUtilities::write2File(const char* fileName, std::string fileContent){
@@ -16,5 +15,13 @@ void FileUtilities::write2File(const char* fileName, std::string fileContent){
         std::ofstream file;
         file.open(fileName);
         file << fileContent;
+    }
+}
+
+void FileUtilities::log2File(const char* fileDirectory, std::string logContent){
+    if(std::experimental::filesystem::exists(fileDirectory)){
+        std::ofstream file;
+        file.open(fileDirectory, std::ios::app);
+        char currentTime = GetActualTime();
     }
 }

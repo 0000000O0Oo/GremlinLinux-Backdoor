@@ -15,11 +15,7 @@
 #include <experimental/filesystem>
 #pragma once
 
-struct FileTiming{
-	char GetActualTime();
-};
-
-struct FileInformations : public FileTiming{
+struct FileInformations{
 	const char* fileName;
 	int fileSize;
 	int fileLinks;
@@ -30,6 +26,8 @@ struct FileInformations : public FileTiming{
 class FileUtilities{
 public:
 	void write2File(const char* fileName, std::string fileContent);
+	void log2File(const char* fileDirectory, std::string logContent);
+	char GetActualTime();
 };
 
 struct Adapters {
