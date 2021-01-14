@@ -43,8 +43,7 @@ void Infection::askForPrivilegeEscalation(){
 				break;
 			} else if(answer2PE == "NO" || answer2PE == "no" || answer2PE == "n" || answer2PE == "N"){
 				printf("[+] Skipping the search for Privilation Escalation Vectors !\n");
-				//tryPrivilegeEscalation  = false;
-				printf("[+] Break");
+				tryPrivilegeEscalation  = false;
 				break;
 			}
 		} else {
