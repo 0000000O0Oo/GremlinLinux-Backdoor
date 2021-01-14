@@ -4,7 +4,6 @@ char* FileUtilities::GetActualTime(){
     time_t actualTime = time(NULL);
     char* aTime = ctime(&actualTime);
     std::string timeReturn = aTime;
-    printf("TIME : %s", aTime);
     return aTime;
 }
 
