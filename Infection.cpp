@@ -74,12 +74,12 @@ bool Infection::askForNoStealthMode(){
 					return stealthEnabled = false;
 				} else if(confirm == "NO" || confirm == "no" || confirm == "n" || confirm == "N") {
 					system("clear");
-					printf("[+] Stealth Mode Enabled, *shhhhhh*");
+					printf("[+] Stealth Mode Enabled, *shhhhhh*\n");
 					return stealthEnabled = true;
 				}		
 			} else if(answer2StealthMode == "NO" || answer2StealthMode == "no" || answer2StealthMode == "n" || answer2StealthMode == "N"){
 				system("clear");
-				printf("[+] Stealth Mode Enabled, *shhhhhh*");
+				printf("[+] Stealth Mode Enabled, *shhhhhh*\n");
 				return stealthEnabled = true;
 			}		
 		}
@@ -171,46 +171,46 @@ void Infection::runLocalCommand(const char* commandToRun, const char* errorMESSA
 void Infection::GetLinuxVersion(){
 	//Get the version of the linux target
 	//Current User
-	const char* currentUserErrorMessage = "[-] Failed to obtain the current user name";
-	const char* currentUserSuccessMessage = "[+] Current User :";
+	const char* currentUserErrorMessage = "\033[1;31m[-] Failed to obtain the current user name\033[0m";
+	const char* currentUserSuccessMessage = "\033[1;32m[+] Current User :\033[0m";
 	runLocalCommand("whoami", currentUserErrorMessage, currentUserSuccessMessage, "whoami");
 	//User and group informations
-	const char* currentUserGroupErrorMessage = "[-] Failed to obtain the user and group information";
-	const char* currentUserGroupSuccessMessage = "[+] User and Group Informations :";
+	const char* currentUserGroupErrorMessage = "\033[1;31m[-] Failed to obtain the user and group information\033[0m";
+	const char* currentUserGroupSuccessMessage = "\033[1;32m[+] User and Group Informations :\033[0m";
 	runLocalCommand("id", currentUserGroupErrorMessage, currentUserGroupSuccessMessage, "id");
 	//Kernel Release
-	const char* kernelReleaseErrorMessage = "[-] Failed to obtain Kernel Release";
-	const char* kernelReleaseSuccessMessage = "[+] Kernel Release :";
+	const char* kernelReleaseErrorMessage = "\033[1;31m[-] Failed to obtain Kernel Release\033[0m";
+	const char* kernelReleaseSuccessMessage = "\033[1;32m[+] Kernel Release :\033[0m";
 	runLocalCommand("uname -r", kernelReleaseErrorMessage, kernelReleaseSuccessMessage, "KernelRelease");
 	//Locale Language on the system
-	const char* localLangErrorMessage = "[+] Can't retrieve System Local Language";
-	const char* localLangSuccessMessage = "[+] System Local Language :";
+	const char* localLangErrorMessage = "\033[1;31m[+] Can't retrieve System Local Language\033[0m";
+	const char* localLangSuccessMessage = "\033[1;32m[+] System Local Language :\033[0m";
 	runLocalCommand("localectl | grep System | cut -d ' ' -f6 | cut -d '=' -f2", localLangErrorMessage, localLangSuccessMessage, "localeLanguage");
-	const char* timeZoneErrorMessage = "[+] Can't retrieve Timezone";
-	const char* timeZoneSuccessMessage = "[+] Timezone :";
+	const char* timeZoneErrorMessage = "\033[1;31m[+] Can't retrieve Timezone\033[0m";
+	const char* timeZoneSuccessMessage = "\033[1;32m[+] Timezone :\033[0m";
 	runLocalCommand("cat /etc/timezone", timeZoneErrorMessage, timeZoneSuccessMessage, "timezone");
 	//KernelVersion [Kind of useless right now]
 	//const char* kernelFullErrorMessage = "[-] Failed to obtain Kernel Version";
 	//const char* kernelFullSuccessMessage = "[+] Kernel Version :";
 	//runLocalCommand("uname -v", kernelFullErrorMessage, kernelFullSuccessMessage, "KernelVersion");
 	//Distribution Release Number
-	const char* distributionReleaseNumberErrorMessage = "[-] Failed to obtain Kernel Distribution Number";
-	const char* distributionReleaseNumberSuccessMessage = "[+] Kernel Release Number :";
+	const char* distributionReleaseNumberErrorMessage = "\033[1;31m[-] Failed to obtain Kernel Distribution Number\033[0m";
+	const char* distributionReleaseNumberSuccessMessage = "\033[1;32m[+] Kernel Release Number :\033[0m";
 	runLocalCommand("lsb_release -r -s", distributionReleaseNumberErrorMessage, distributionReleaseNumberSuccessMessage, "KernelVersion");
 	//APACHE2 Detection
-	const char* apacheDetectionErrorMessage = "[-] Couldn't search apache2";
-	const char* apacheDetectionSuccessMessage = "[+] Apache2 Found on the victim system !";
+	const char* apacheDetectionErrorMessage = "\033[1;31m[-] Couldn't search apache2\033[0m";
+	const char* apacheDetectionSuccessMessage = "\033[1;32m[+] Apache2 Found on the victim system !\033[0m";
 	runLocalCommand("dpkg --get-selections | grep apache2 | cut -d '	' -f1", apacheDetectionErrorMessage, apacheDetectionSuccessMessage, "findApache");
 	//Cron jobs
 	printf("[+] Cron Jobs :\n");
-	const char* cronJobsErrorMessage = "[-] Failed to obtain the Cron Jobs";
-	const char* cronJobsSuccessMessage = "[+] Cron Jobs successfully retrieved !";
+	const char* cronJobsErrorMessage = "\033[1;31m[-] Failed to obtain the Cron Jobs\033[0m";
+	const char* cronJobsSuccessMessage = "\033[1;32m[+] Cron Jobs successfully retrieved !\033[0m";
 	runLocalCommand("crontab -l", cronJobsErrorMessage, cronJobsSuccessMessage);
 	//SUID Files
-	const char* suidFilesErrorMessage = "[-] Failed to obtain SUID Files";
-	const char* suidFilesSuccessMessage = "[+] SUID Files :";
+	const char* suidFilesErrorMessage = "\033[1;31m[-] Failed to obtain SUID Files\033[0m";
+	const char* suidFilesSuccessMessage = "\033[1;32m[+] SUID Files :\033[0m";
 	if(tryPrivilegeEscalation){
-		printf("[+] SUID Files :\n");
+		printf("\033[1;32m[+] SUID Files :\033[0m\n");
 		runLocalCommand("find / -type f -perm -u=s 2>/dev/null", suidFilesErrorMessage, suidFilesSuccessMessage, "suidFiles");
 	}
 }
@@ -230,8 +230,7 @@ bool Infection::startInfection(){
 	Infection::askForNoStealthMode();
 	//Ask for privileges
 	Infection::askForPrivilegeEscalation();
-	//GetLinuxVersion
-	printf("[+] Get Linux Version");
+  	//GetLinuxVersioni9u
 	Infection::GetLinuxVersion();
 	//Enumerate adapters;
 	Networking::enumerateAdapters();
