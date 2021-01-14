@@ -57,14 +57,14 @@ void Infection::askForPrivilegeEscalation(){
 bool Infection::askForNoStealthMode(){
 	std::string answer2StealthMode{""};
 	while(true){
-		printf("[+] Would you like to disable Stealth Mode and really F#!$ your target system ?\n");
-		printf("Please use the following format for your answer (y/Y/yes/YES | n/N/no/NO) : ");
+		printf("\033[1;32m[+] Would you like to disable Stealth Mode and really F#!$ your target system ?\033[0m \n");
+		printf("\033[1;32mPlease use the following format for your answer (y/Y/yes/YES | n/N/no/NO) : \033[0m");
 		std::cin >> answer2StealthMode;
 		if(answer2StealthMode == "YES" || answer2StealthMode == "NO" || answer2StealthMode == "Y" || answer2StealthMode == "N" || answer2StealthMode == "yes" || answer2StealthMode == "no" || answer2StealthMode == "y" || answer2StealthMode == "n"){
 			if(answer2StealthMode == "YES" || answer2StealthMode == "yes" || answer2StealthMode == "y" || answer2StealthMode == "Y"){
 				std::string confirm{""};
 				system("clear");
-				printf("\033[1;31m[+] Are you sure you want to continue ? (The damage caused by the malware are not reversable) : \033[0m\n");
+				printf("\033[1;31;40m [+] Are you sure you want to continue ? (The damage caused by the malware are not reversable) : \033[0m \n");
 				printf("Please use the following format for your answer (y/Y/yes/YES | n/N/no/NO) : ");
 				std::cin >> confirm;
 				if(confirm == "YES" || confirm == "yes" || confirm == "y" || confirm == "Y"){
