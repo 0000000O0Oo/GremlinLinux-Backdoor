@@ -4,13 +4,13 @@ void Networking::enumerateAdapters(){
 	printf("[+] Adapters Enumeration : \n");
 	struct ifaddrs* addresses;
 
-	if(getifaddrs(&addresses) == 1){
+	if(getifaddrs(&addresses) == -1){
 		printf("getifaddrs call failed\n");
 		return;
 	}
 	struct ifaddrs* address = addresses;
+	Adapters currentAdapter;
 	while(address){
-		Adapters currentAdapter;
 		currentAdapter.Family = address->ifa_addr->sa_family;
 		if(currentAdapter.Family == AF_INET || currentAdapter.Family == AF_INET6){
 			currentAdapter.AdapterName = address->ifa_name;
@@ -23,6 +23,9 @@ void Networking::enumerateAdapters(){
 			printf("%s\n", currentAdapter.LocalIPAddress.c_str());
 			adapters.push_back(currentAdapter);
 		}
+		address = address->ifa_next;
 	}
+	freeifaddrs(addresses);
+	return;
 }
 

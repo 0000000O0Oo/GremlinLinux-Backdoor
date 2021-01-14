@@ -37,6 +37,10 @@ struct Adapters {
 	std::string LocalIPAddress;
 };
 
+class PrivilegeEscalation{
+	
+};
+
 class Networking {
 public:
 	std::vector<Adapters> adapters;	
