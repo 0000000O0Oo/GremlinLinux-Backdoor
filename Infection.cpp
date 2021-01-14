@@ -93,7 +93,7 @@ void Infection::runLocalCommand(const char* commandToRun, const char* errorMESSA
 	char buffer[2055];
 	FILE *command = popen(commandToRun, "r");
 	if(command == NULL){
-		printf(errorMESSAGE);
+		printf("%s", errorMESSAGE);
 	}
 	//Print the command
 	while(fgets(buffer, sizeof(buffer), command) != NULL){
@@ -105,7 +105,7 @@ void Infection::runLocalCommand(const char* commandToRun, const char* errorMESSA
 	char buffer[2055];
 	FILE *command = popen(commandToRun, "r");
 	if(command == NULL){
-		printf(errorMESSAGE);
+		printf("%s", errorMESSAGE);
 		log2File("logs.txt", errorMESSAGE);
 	}
 

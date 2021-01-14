@@ -33,7 +33,7 @@ void FileUtilities::log2File(const char* fileDirectory, std::string logContent){
         //logTime was == date, now it == [date]
         logTime = "[" + logTime + "]";
         // Writing logContent to the file
-        file << logTime << " " << logContent << "\n";
+        file<<logTime<<" "<<logContent<<"\n";
         file.close();
     } else {
         std::ofstream file;
@@ -47,7 +47,7 @@ void FileUtilities::log2File(const char* fileDirectory, std::string logContent){
         //Logtime was == date, now it == [date]
         logTime = "[" + logTime + "]";
         //Log it to the file
-        file << logTime << " " << logContent << "\n";
+        file<<logTime<<" "<<logContent<<"\n";
         file.close();
     }
 }

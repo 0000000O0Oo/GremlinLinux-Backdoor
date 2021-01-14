@@ -14,13 +14,13 @@ void Networking::enumerateAdapters(){
 		currentAdapter.Family = address->ifa_addr->sa_family;
 		if(currentAdapter.Family == AF_INET || currentAdapter.Family == AF_INET6){
 			currentAdapter.AdapterName = address->ifa_name;
-			printf("\t - %s-> ", currentAdapter.AdapterName);
+			printf("\t - %s-> ", currentAdapter.AdapterName.c_str());
 			printf("%s -> ", currentAdapter.Family == AF_INET ? "IPv4" : "IPv6");
 			char ap[100];
 			const int family_size = currentAdapter.Family == AF_INET ? sizeof(struct sockaddr_in) : sizeof(struct sockaddr_in6);
 			getnameinfo(address->ifa_addr, family_size, ap, sizeof(ap), 0, 0, NI_NUMERICHOST);
 			currentAdapter.LocalIPAddress = ap;
-			printf("%s\n", currentAdapter.LocalIPAddress);
+			printf("%s\n", currentAdapter.LocalIPAddress.c_str());
 			adapters.push_back(currentAdapter);
 		}
 	}
