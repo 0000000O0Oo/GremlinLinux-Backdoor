@@ -53,8 +53,7 @@ bool PrivilegeEscalation::checkDir(std::string fileName, bool createFile){
 
 bool PrivilegeEscalation::isEtcPasswdWriteable(){
     FileInformations PasswdFile = GetFileInformations("/etc/passwd");
-
-	//If user and group is root and file are not writable by others 
+	
 	if(PasswdFile.fileUserOwner == "root" && PasswdFile.filePermissions[8] != 'w' || PasswdFile.fileGroupOwner == "root" && PasswdFile.filePermissions[8] != 'w'){
 		std::cout << "\033[1;31m[+] /etc/passwd file is only writable by root, im going to make a copy of the file and put it in the ZIP directory, it might be useful later ;)\033[0m\n";
 		//Create ZIP Directory
